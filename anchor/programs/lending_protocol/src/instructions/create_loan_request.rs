@@ -1,12 +1,12 @@
 //! Instruction: Create a new loan request, locking collateral in the vault.
 
-use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
 use crate::constants::*;
 use crate::errors::LendingError;
 use crate::events::LoanRequested;
 use crate::math::{collateral_ratio_satisfied, origination_fee_amount};
 use crate::state::{Loan, LoanStatus, Market};
+use anchor_lang::prelude::*;
+use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
 
 /// Accounts required to create a loan request.
 #[derive(Accounts)]
@@ -134,7 +134,8 @@ pub fn handle_create_loan_request(
     loan.interest_repaid = 0;
     loan.last_interest_update = 0;
     loan.accrued_interest = 0;
-    loan.origination_fee_amount = origination_fee_amount(principal_amount, market.origination_fee_bps)?;
+    loan.origination_fee_amount =
+        origination_fee_amount(principal_amount, market.origination_fee_bps)?;
 
     emit!(LoanRequested {
         market: loan.market,

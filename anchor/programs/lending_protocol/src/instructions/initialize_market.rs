@@ -1,11 +1,11 @@
 //! Instruction: Initialize a new lending market.
 
-use anchor_lang::prelude::*;
-use anchor_spl::token::{Mint, TokenAccount};
 use crate::constants::*;
 use crate::errors::LendingError;
 use crate::events::MarketInitialized;
 use crate::state::Market;
+use anchor_lang::prelude::*;
+use anchor_spl::token::{Mint, TokenAccount};
 
 /// Accounts required to initialize a new lending market.
 #[derive(Accounts)]

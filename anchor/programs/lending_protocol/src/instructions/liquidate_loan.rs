@@ -1,11 +1,11 @@
 //! Instruction: Liquidate a defaulted loan, seizing collateral for the lender.
 
-use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::constants::*;
 use crate::errors::LendingError;
 use crate::events::LoanLiquidated;
 use crate::state::{Loan, LoanStatus, Market};
+use anchor_lang::prelude::*;
+use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 
 /// Accounts required to liquidate a defaulted loan.
 #[derive(Accounts)]
