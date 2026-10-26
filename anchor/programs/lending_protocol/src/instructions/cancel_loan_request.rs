@@ -1,11 +1,11 @@
 //! Instruction: Cancel a pending loan request and return collateral.
 
-use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::constants::*;
 use crate::errors::LendingError;
 use crate::events::LoanCancelled;
 use crate::state::{Loan, LoanStatus, Market};
+use anchor_lang::prelude::*;
+use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 
 /// Accounts required to cancel a pending loan request.
 #[derive(Accounts)]
@@ -59,7 +59,10 @@ pub fn handle_cancel_loan_request(ctx: Context<CancelLoanRequest>) -> Result<()>
         LendingError::VaultUnderfunded
     );
 
-    msg!("Cancelling loan request, returning {} collateral", vault_balance);
+    msg!(
+        "Cancelling loan request, returning {} collateral",
+        vault_balance
+    );
 
     let loan_key = loan.key();
     let signer_seeds: &[&[u8]] = &[

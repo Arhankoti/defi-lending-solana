@@ -2,6 +2,13 @@
 
 A collateralized peer-to-peer lending protocol built on Solana using Anchor, with a Java CLI client.
 
+## Status
+
+Part 5 of 24 (baseline). The `v0-reference` tag marks the original code. Current baseline on `main`:
+`cargo test` 14 passed, `anchor test` 15 passing, `cargo clippy -- -D warnings` clean. The v0 code as originally
+committed did not pass `anchor build` (see [blog post 5](./blog/blog-5-setup-baseline.md)). Progress is tracked in
+the [blog index](./blog/blog-index.md).
+
 ## Architecture
 
 ```
@@ -52,7 +59,7 @@ A collateralized peer-to-peer lending protocol built on Solana using Anchor, wit
 │   │   └── model/              # Data models
 │   └── pom.xml
 ├── docs/                   # Documentation
-└── .github/workflows/      # CI/CD
+└── blog/                   # Blog series documenting the build
 ```
 
 ## Quick Start
@@ -146,10 +153,14 @@ See `java -jar target/lending-client.jar` for all commands.
 
 ## CI/CD
 
-GitHub Actions workflows in `.github/workflows/`:
+There is no CI yet. An earlier version of this README claimed GitHub Actions workflows
+(`ci.yml`, `testnet-deploy.yml`) that were never in the repository. CI is planned for Part 8 and a manual
+devnet-deploy workflow for Part 9; this section will be updated when they exist. Until then, run the checks locally:
 
-- **ci.yml** — Runs on push/PR: Rust check + clippy + fmt, Anchor build, integration tests, Java build + test
-- **testnet-deploy.yml** — Manual trigger: deploys to devnet or testnet
+```bash
+cd anchor && cargo fmt --check && cargo clippy -- -D warnings && cargo test
+cd anchor && anchor build && anchor test
+```
 
 ## Documentation
 

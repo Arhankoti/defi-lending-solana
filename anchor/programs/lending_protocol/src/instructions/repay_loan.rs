@@ -1,12 +1,12 @@
 //! Instruction: Fully repay an active loan and release collateral.
 
-use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::constants::*;
 use crate::errors::LendingError;
 use crate::events::LoanRepaid;
 use crate::math::{calculate_accrued_interest, protocol_fee_amount};
 use crate::state::{Loan, LoanStatus, Market};
+use anchor_lang::prelude::*;
+use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 
 /// Accounts required to fully repay an active loan.
 #[derive(Accounts)]
@@ -92,11 +92,8 @@ pub fn handle_repay_loan(ctx: Context<RepayLoan>) -> Result<()> {
         .principal_amount
         .checked_sub(loan.principal_repaid)
         .ok_or(error!(LendingError::MathOverflow))?;
-    let new_interest = calculate_accrued_interest(
-        principal_outstanding,
-        loan.interest_bps,
-        elapsed,
-    )?;
+    let new_interest =
+        calculate_accrued_interest(principal_outstanding, loan.interest_bps, elapsed)?;
     loan.accrued_interest = loan
         .accrued_interest
         .checked_add(new_interest)

@@ -1,10 +1,10 @@
 //! Instruction: Update an existing market's configuration.
 
-use anchor_lang::prelude::*;
 use crate::constants::*;
 use crate::errors::LendingError;
 use crate::events::MarketUpdated;
 use crate::state::Market;
+use anchor_lang::prelude::*;
 
 /// Accounts required to update a market (admin only).
 #[derive(Accounts)]
@@ -15,6 +15,7 @@ pub struct UpdateMarket<'info> {
 }
 
 /// Updates the market's fee, collateral ratio, grace period, pause state, and caps.
+#[allow(clippy::too_many_arguments)]
 pub fn handle_update_market(
     ctx: Context<UpdateMarket>,
     protocol_fee_bps: u16,

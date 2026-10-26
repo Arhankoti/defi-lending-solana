@@ -8,13 +8,13 @@ use anchor_lang::prelude::*;
 pub mod constants;
 pub mod errors;
 pub mod events;
+pub mod instructions;
 pub mod math;
 pub mod state;
-pub mod instructions;
 
 use instructions::*;
 
-declare_id!("Fg6PaFpoGXkYsidMpWxTWqozkE6w8dQKQp2h8K9wzJp");
+declare_id!("HUau3frCh5KJ4WbcMvsPwtNnb5a8puYbFEzubpYL4pAZ");
 
 #[program]
 pub mod lending_protocol {
@@ -30,10 +30,19 @@ pub mod lending_protocol {
         supply_cap: u64,
         borrow_cap: u64,
     ) -> Result<()> {
-        instructions::handle_initialize_market(ctx, protocol_fee_bps, min_collateral_ratio_bps, grace_period_secs, origination_fee_bps, supply_cap, borrow_cap)
+        instructions::handle_initialize_market(
+            ctx,
+            protocol_fee_bps,
+            min_collateral_ratio_bps,
+            grace_period_secs,
+            origination_fee_bps,
+            supply_cap,
+            borrow_cap,
+        )
     }
 
     /// Updates an existing market's configuration (admin only).
+    #[allow(clippy::too_many_arguments)]
     pub fn update_market(
         ctx: Context<UpdateMarket>,
         protocol_fee_bps: u16,
@@ -44,7 +53,16 @@ pub mod lending_protocol {
         supply_cap: u64,
         borrow_cap: u64,
     ) -> Result<()> {
-        instructions::handle_update_market(ctx, protocol_fee_bps, min_collateral_ratio_bps, grace_period_secs, is_paused, origination_fee_bps, supply_cap, borrow_cap)
+        instructions::handle_update_market(
+            ctx,
+            protocol_fee_bps,
+            min_collateral_ratio_bps,
+            grace_period_secs,
+            is_paused,
+            origination_fee_bps,
+            supply_cap,
+            borrow_cap,
+        )
     }
 
     /// Creates a new loan request, locking the borrower's collateral.
@@ -56,7 +74,14 @@ pub mod lending_protocol {
         interest_bps: u16,
         duration_secs: i64,
     ) -> Result<()> {
-        instructions::handle_create_loan_request(ctx, loan_seed, principal_amount, collateral_amount, interest_bps, duration_secs)
+        instructions::handle_create_loan_request(
+            ctx,
+            loan_seed,
+            principal_amount,
+            collateral_amount,
+            interest_bps,
+            duration_secs,
+        )
     }
 
     /// Cancels a pending loan request and returns collateral to the borrower.

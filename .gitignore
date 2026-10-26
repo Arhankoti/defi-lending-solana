@@ -1,0 +1,31 @@
+# Build output
+anchor/target/
+java-client/target/
+target/
+
+# Dependencies
+node_modules/
+
+# Anchor / validator state
+.anchor/
+test-ledger/
+*.ledger/
+
+# Secrets and keypairs
+.env
+.env.*
+*-keypair.json
+id.json
+keypair*.json
+devnet-deployer.json
+program-keypair.json
+
+# Local working files (owner's notes, never committed)
+plan/
+temp/
+CLAUDE.md
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/

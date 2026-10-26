@@ -1,11 +1,11 @@
 //! Instruction: Close a terminal loan account and its collateral vault.
 
-use anchor_lang::prelude::*;
-use anchor_spl::token::{self, CloseAccount, Token, TokenAccount};
 use crate::constants::*;
 use crate::errors::LendingError;
 use crate::events::LoanClosed;
 use crate::state::{Loan, LoanStatus};
+use anchor_lang::prelude::*;
+use anchor_spl::token::{self, CloseAccount, Token, TokenAccount};
 
 /// Accounts required to close a loan account and reclaim rent.
 #[derive(Accounts)]
@@ -41,8 +41,7 @@ pub fn handle_close_loan(ctx: Context<CloseLoan>) -> Result<()> {
             LendingError::UnauthorizedCloser
         ),
         LoanStatus::Repaid => require!(
-            ctx.accounts.closer.key() == loan.borrower
-                || ctx.accounts.closer.key() == loan.lender,
+            ctx.accounts.closer.key() == loan.borrower || ctx.accounts.closer.key() == loan.lender,
             LendingError::UnauthorizedCloser
         ),
         LoanStatus::Liquidated => require!(

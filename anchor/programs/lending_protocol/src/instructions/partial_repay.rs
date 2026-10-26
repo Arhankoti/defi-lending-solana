@@ -1,11 +1,11 @@
 //! Instruction: Make a partial repayment on an active loan.
 
-use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::errors::LendingError;
 use crate::events::PartialRepayment;
 use crate::math::{calculate_accrued_interest, protocol_fee_amount};
 use crate::state::{Loan, LoanStatus, Market};
+use anchor_lang::prelude::*;
+use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 
 /// Accounts required for a partial loan repayment.
 #[derive(Accounts)]
@@ -69,11 +69,8 @@ pub fn handle_partial_repay(ctx: Context<PartialRepay>, amount: u64) -> Result<(
         .principal_amount
         .checked_sub(loan.principal_repaid)
         .ok_or(error!(LendingError::MathOverflow))?;
-    let new_interest = calculate_accrued_interest(
-        principal_outstanding,
-        loan.interest_bps,
-        elapsed,
-    )?;
+    let new_interest =
+        calculate_accrued_interest(principal_outstanding, loan.interest_bps, elapsed)?;
     loan.accrued_interest = loan
         .accrued_interest
         .checked_add(new_interest)

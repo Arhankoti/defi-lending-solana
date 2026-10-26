@@ -2,9 +2,9 @@
 //!
 //! All functions use `u128` intermediate precision and return checked results.
 
-use anchor_lang::prelude::*;
 use crate::constants::{BPS_DENOMINATOR, SECONDS_PER_YEAR};
 use crate::errors::LendingError;
+use anchor_lang::prelude::*;
 
 /// Returns `true` when `collateral_amount / principal_amount >= min_ratio_bps / 10 000`.
 ///

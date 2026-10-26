@@ -1,11 +1,11 @@
 //! Instruction: Fund a pending loan request, transferring principal to the borrower.
 
-use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 use crate::constants::*;
 use crate::errors::LendingError;
 use crate::events::{LoanFunded, OriginationFeeCharged};
 use crate::state::{Loan, LoanStatus, Market};
+use anchor_lang::prelude::*;
+use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 
 /// Accounts required to fund a loan.
 #[derive(Accounts)]
@@ -78,7 +78,8 @@ pub fn handle_fund_loan(ctx: Context<FundLoan>) -> Result<()> {
     // Enforce supply/borrow caps at funding time
     let market = &ctx.accounts.market;
     if market.supply_cap > 0 {
-        let new_principal = market.total_principal_outstanding
+        let new_principal = market
+            .total_principal_outstanding
             .checked_add(principal_amount)
             .ok_or(error!(LendingError::MathOverflow))?;
         require!(
@@ -87,7 +88,8 @@ pub fn handle_fund_loan(ctx: Context<FundLoan>) -> Result<()> {
         );
     }
     if market.borrow_cap > 0 {
-        let new_collateral = market.total_collateral_locked
+        let new_collateral = market
+            .total_collateral_locked
             .checked_add(collateral_amount)
             .ok_or(error!(LendingError::MathOverflow))?;
         require!(
